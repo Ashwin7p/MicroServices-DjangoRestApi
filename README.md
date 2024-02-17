@@ -1,1 +1,11 @@
 # MicroServices-DjangoRestApi
+# Overview Of the MicroService Application 
+![plot](./Agile development.png)
+
+
+# Features
+- 19 API Endpoints
+- Managing users, recipes, tags, ingredients
+- User Authentication
+- Browseable Admin Interface (Django Admin)
+- Browsable API (Swagger)
