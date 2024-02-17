@@ -1,0 +1,14 @@
+version: "3.9"
+# build in work dir, volumes -> reflect changes done in local directly(sync), no rebuild container
+services:
+  app:
+    build:
+      context: .
+      args: # while we build the dockerfile, create an argument
+        - DEV=true
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./app:/app
+    command: >
+      sh -c "python manage.py runserver 0.0.0.0:8000"
