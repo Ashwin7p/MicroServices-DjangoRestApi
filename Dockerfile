@@ -14,7 +14,13 @@ EXPOSE 8000
 # this can be overrided in Docker Compose file
 ARG DEV=false
 #avoid multiple docker image layer for dependencies as added, single one
+# apk used in alpine version of linux to add package
 RUN python -m venv /py && \
+    apk add --update --no-cache postgresql-client && \
+    # add the dependencies to be installed location, tmp dependencies added for making posgres interact
+    apk add --update --no-cache --virtual .tmp-build-deps \
+    # add the dependencies(libraries) required for interacting in virtual loaction provided, develop the dependencies
+        build-base postgresql-dev musl-dev && \
     /py/bin/pip install --upgrade pip && \
     /py/bin/pip install -r /tmp/requirements.txt && \
     if [ $DEV = "true" ]; \
@@ -22,6 +28,9 @@ RUN python -m venv /py && \
     fi && \
     #remove temp file if created while configuring
     rm -rf /tmp && \ 
+    # remove the dependencies added, grouped so that it can be removed easily
+    apk del .tmp-build-deps && \ 
+    # /var/cache/apk/ this location has packages necessary only
     adduser \
         --disabled-password \
         --no-create-home \
