@@ -1,0 +1,14 @@
+"""
+URL mappings for the user API.
+"""
+from django.urls import path
+
+from user import views
+
+
+app_name = 'user' #reverse mapping
+
+urlpatterns = [
+    path('create/', views.CreateUserView.as_view()#class based view django supported 
+    , name='create'),
+]
