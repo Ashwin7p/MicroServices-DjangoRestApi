@@ -23,6 +23,17 @@ class UserSerializer(serializers.ModelSerializer):#modelserializer -> for models
         """Create and return a user with encrypted password."""
         return get_user_model().objects.create_user(**validated_data) #overriding the the default simple user create, customized create user (instead of serializer.save())
 
+    def update(self, instance, validated_data):
+        """Update and return user."""
+        password = validated_data.pop('password', None) #remove the password from dictionary
+        user = super().update(instance, validated_data) #just call the base class super, laveraging its functionality
+
+        if password:
+            user.set_password(password)
+            user.save()
+
+        return user
+
 class AuthTokenSerializer(serializers.Serializer):
     """Serializer for the user auth token."""
     email = serializers.EmailField()
